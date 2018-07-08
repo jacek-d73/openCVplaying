@@ -32,3 +32,6 @@ HEADERS += \
 
 FORMS += \
         widget.ui
+
+#opencv linking via pkg-config
+LIBS += `pkg-config opencv --libs`
