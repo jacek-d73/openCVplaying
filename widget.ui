@@ -10,6 +10,9 @@
     <height>524</height>
    </rect>
   </property>
+  <property name="mouseTracking">
+   <bool>true</bool>
+  </property>
   <property name="windowTitle">
    <string>Widget</string>
   </property>
@@ -34,6 +37,9 @@
      <width>801</width>
      <height>401</height>
     </rect>
+   </property>
+   <property name="mouseTracking">
+    <bool>false</bool>
    </property>
    <property name="frameShape">
     <enum>QFrame::StyledPanel</enum>

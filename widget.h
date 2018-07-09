@@ -11,7 +11,8 @@
 #include <string>
 
 #include <QWidget>
-#include <QLabel>
+#include <QMouseEvent>
+
 
 using namespace cv;
 using namespace std;
@@ -27,6 +28,9 @@ class Widget : public QWidget
 public:
     explicit Widget(QWidget *parent = 0);
     ~Widget();
+
+protected:
+    void mouseMoveEvent(QMouseEvent *event) override;
 
 private slots:
     void on_imageOpenButton_clicked();

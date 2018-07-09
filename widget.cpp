@@ -6,11 +6,19 @@ Widget::Widget(QWidget *parent) :
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
+    ui->labelImageDisplay->setMouseTracking(true);//track mouse movement
 }
 
 Widget::~Widget()
 {
     delete ui;
+}
+
+void Widget::mouseMoveEvent(QMouseEvent *event)
+{
+    cout << "In widget: " << event->pos().x() << ", " << event->pos().y() << endl;
+    QPoint p = ui->labelImageDisplay->mapFromParent(event->pos());
+    cout << "In label: " << p.x() << ", " << p.y() << endl;
 }
 
 void Widget::on_imageOpenButton_clicked()
@@ -24,7 +32,11 @@ void Widget::on_imageOpenButton_clicked()
     }
     else
     {
-        cv::resize(imageOriginal, imageManipulated, Size(), 0.1, 0.1, CV_INTER_AREA );
+        Mat imageROI(imageOriginal,Rect(2000,1000,1500,1500));
+        cv::resize(imageROI, imageManipulated, Size(), 0.3, 0.3, CV_INTER_AREA );
+
+        cout << "Width: " << imageManipulated.cols << " Hight: " << imageManipulated.rows << endl;
+
         Mat tempImage;
         cvtColor(imageManipulated, tempImage, CV_BGR2GRAY);
         QImage imgOut= QImage((uchar*) tempImage.data, tempImage.cols, tempImage.rows, tempImage.step, QImage::Format_Grayscale8);
@@ -34,5 +46,8 @@ void Widget::on_imageOpenButton_clicked()
         ui->labelImageDisplay->setPixmap(pixmap);//that's how to do it
 
     }
-
 }
+
+
+
+
