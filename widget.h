@@ -11,6 +11,7 @@
 #include <string>
 
 #include <QWidget>
+#include <QLabel>
 
 using namespace cv;
 using namespace std;
@@ -33,6 +34,7 @@ private slots:
 private:
     Ui::Widget *ui;
     Mat imageOriginal, imageManipulated;
+
 };
 
 #endif // WIDGET_H

@@ -25,8 +25,14 @@ void Widget::on_imageOpenButton_clicked()
     else
     {
         cv::resize(imageOriginal, imageManipulated, Size(), 0.1, 0.1, CV_INTER_AREA );
-        namedWindow( "Display window", WINDOW_AUTOSIZE ); // Create a window for display.
-        imshow( "Display window", imageManipulated );                // Show the image inside it.
+        Mat tempImage;
+        cvtColor(imageManipulated, tempImage, CV_BGR2GRAY);
+        QImage imgOut= QImage((uchar*) tempImage.data, tempImage.cols, tempImage.rows, tempImage.step, QImage::Format_Grayscale8);
+        QPixmap pixmap = QPixmap::fromImage(imgOut);
+        ui->labelImageDisplay->setFixedHeight(imgOut.height());
+        ui->labelImageDisplay->setFixedWidth(imgOut.width());
+        ui->labelImageDisplay->setPixmap(pixmap);//that's how to do it
+
     }
 
 }

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>880</width>
+    <height>524</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,14 +16,30 @@
   <widget class="QPushButton" name="imageOpenButton">
    <property name="geometry">
     <rect>
-     <x>258</x>
-     <y>260</y>
+     <x>740</x>
+     <y>480</y>
      <width>121</width>
      <height>25</height>
     </rect>
    </property>
    <property name="text">
     <string>Image Open</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelImageDisplay">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>50</y>
+     <width>801</width>
+     <height>401</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>
