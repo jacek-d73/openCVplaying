@@ -35,10 +35,17 @@ protected:
 private slots:
     void on_imageOpenButton_clicked();
 
+    void on_verticalSliderZoomInOut_valueChanged(int value);
+
+    void on_verticalSliderZoomInOut_sliderMoved(int position);
+
 private:
     Ui::Widget *ui;
     Mat imageOriginal, imageManipulated;
 
+    double imageScaling;//scaling to fit the label after open
+    double zoomFactor;//1.0 - as scaled after open
+    int actualOriginX, actualOriginY;//actual left, upper corner of ROI
 };
 
 #endif // WIDGET_H
