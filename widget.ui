@@ -34,9 +34,15 @@
     <rect>
      <x>20</x>
      <y>50</y>
-     <width>801</width>
+     <width>640</width>
      <height>401</height>
     </rect>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>640</width>
+     <height>401</height>
+    </size>
    </property>
    <property name="mouseTracking">
     <bool>false</bool>
@@ -46,6 +52,51 @@
    </property>
    <property name="text">
     <string/>
+   </property>
+  </widget>
+  <widget class="QSlider" name="verticalSliderZoomInOut">
+   <property name="geometry">
+    <rect>
+     <x>710</x>
+     <y>90</y>
+     <width>21</width>
+     <height>160</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <number>1</number>
+   </property>
+   <property name="maximum">
+    <number>100</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelZoomInOut">
+   <property name="geometry">
+    <rect>
+     <x>680</x>
+     <y>60</y>
+     <width>91</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Zoom In/Out</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelZoomSliderValue">
+   <property name="geometry">
+    <rect>
+     <x>770</x>
+     <y>170</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
    </property>
   </widget>
  </widget>

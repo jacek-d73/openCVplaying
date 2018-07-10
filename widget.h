@@ -35,9 +35,13 @@ protected:
 private slots:
     void on_imageOpenButton_clicked();
 
+    void on_verticalSliderZoomInOut_valueChanged(int value);
+
 private:
     Ui::Widget *ui;
     Mat imageOriginal, imageManipulated;
+
+    int imageScaling;
 
 };
 

@@ -7,6 +7,9 @@ Widget::Widget(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->labelImageDisplay->setMouseTracking(true);//track mouse movement
+    this->imageScaling = 100;
+    //update slider and label
+    ui->verticalSliderZoomInOut->setValue(imageScaling);
 }
 
 Widget::~Widget()
@@ -32,8 +35,14 @@ void Widget::on_imageOpenButton_clicked()
     }
     else
     {
-        Mat imageROI(imageOriginal,Rect(2000,1000,1500,1500));
-        cv::resize(imageROI, imageManipulated, Size(), 0.3, 0.3, CV_INTER_AREA );
+        imageScaling = 100 * ui->labelImageDisplay->maximumWidth()/imageOriginal.cols;
+
+        //update slider and label
+        ui->verticalSliderZoomInOut->setValue(imageScaling);
+
+        //Mat imageROI(imageOriginal,Rect(2000,1000,1500,1500));
+        double scale(static_cast<double>(imageScaling)/100.0);
+        cv::resize(imageOriginal, imageManipulated, Size(), scale, scale, CV_INTER_AREA );
 
         cout << "Width: " << imageManipulated.cols << " Hight: " << imageManipulated.rows << endl;
 
@@ -49,5 +58,8 @@ void Widget::on_imageOpenButton_clicked()
 }
 
 
-
-
+void Widget::on_verticalSliderZoomInOut_valueChanged(int value)
+{
+    QString s = QString::number(value);
+    ui->labelZoomSliderValue->setText(s);
+}
