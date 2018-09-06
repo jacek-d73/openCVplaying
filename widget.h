@@ -44,7 +44,7 @@ private:
 
     double imageScaling;//scaling to fit the label after open
     double zoomFactor;//1.0 - as scaled after open
-    QPoint centerOfROI;//ROI center coords
+    QPoint centerOfROI;//ROI center coords in original image
 };
 
 #endif // WIDGET_H

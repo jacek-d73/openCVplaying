@@ -28,10 +28,14 @@ void Widget::mousePressEvent(QMouseEvent *event)
         && p.y()>=0 && p.y()<= ui->labelImageDisplay->height())
         {
             cout << "In label: " << p.x() << ", " << p.y() << endl;
-        }
-        else
-        {
-            cout << "Out of the borders." << endl;
+
+            //original image scale
+            double const scale(zoomFactor * imageScaling);
+            //cout << "In original image: " << static_cast<int>(p.x()/scale) << ", " << static_cast<int>(p.y()/scale) << endl;
+
+            //define center of ROI
+            centerOfROI.setX(static_cast<int>(p.x()/scale));
+            centerOfROI.setY(static_cast<int>(p.y()/scale));
         }
     }
 }
@@ -48,8 +52,9 @@ void Widget::on_imageOpenButton_clicked()
     }
     else
     {
-        cout << "Image size: " << imageOriginal.cols << "x" << imageOriginal.rows <<endl;
-        cout << "Image aspect: " << static_cast<double>(imageOriginal.cols)/static_cast<double>(imageOriginal.rows) <<endl;
+        //define center of ROI
+        centerOfROI.setX(imageOriginal.cols / 2);
+        centerOfROI.setY(imageOriginal.rows / 2);
 
         //initial fitting image into label size
         imageScaling = static_cast<double>(ui->labelImageDisplay->maximumWidth())/static_cast<double>(imageOriginal.cols);
@@ -73,7 +78,9 @@ void Widget::on_verticalSliderZoomInOut_valueChanged(int value)
         //create rectangle based on original image size and zoom factor
         int rectXsize(imageOriginal.cols/zoomFactor);
         int rectYsize(imageOriginal.rows/zoomFactor);
-        Rect myROI(0,0,rectXsize,rectYsize);
+
+        //openCV Rect(x,y,width,hight)
+        Rect myROI(centerOfROI.x() - rectXsize / 2 ,centerOfROI.y() - rectYsize / 2 ,rectXsize ,rectYsize);
         imageManipulated = imageOriginal(myROI);
 
         double scale(zoomFactor * imageScaling);
@@ -81,7 +88,7 @@ void Widget::on_verticalSliderZoomInOut_valueChanged(int value)
         cout << "Original image scaling: " << imageScaling << ", ROI scaling: " << scale << endl;
 
         Mat tempImage;
-        cv::resize(imageManipulated, tempImage, Size(), scale, scale, CV_INTER_AREA );
+        cv::resize(imageManipulated, tempImage, Size(), scale, scale, CV_INTER_CUBIC  );
 
 //        namedWindow("imageManipulated", WINDOW_AUTOSIZE);
 //        imshow("imageManipulated", imageManipulated);
