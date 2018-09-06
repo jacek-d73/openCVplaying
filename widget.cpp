@@ -9,8 +9,7 @@ Widget::Widget(QWidget *parent) :
     ui->labelImageDisplay->setMouseTracking(true);//track mouse movement
     this->imageScaling = 100;
     this->zoomFactor = 1.0;
-    this->actualOriginX = 0;
-    this->actualOriginY = 0;
+
     //update slider and label
     ui->verticalSliderZoomInOut->setValue(imageScaling);
 }
@@ -20,18 +19,15 @@ Widget::~Widget()
     delete ui;
 }
 
-void Widget::mouseMoveEvent(QMouseEvent *event)
+void Widget::mousePressEvent(QMouseEvent *event)
 {
-//    cout << "In widget: " << event->pos().x() << ", " << event->pos().y() << endl;
-//    QPoint p = ui->labelImageDisplay->mapFromParent(event->pos());
-//    cout << "In label: " << p.x() << ", " << p.y() << endl;
-
     if(event->buttons() & Qt::LeftButton)
     {
-        if(event->pos().x()>=0 && event->pos().x()<= ui->labelImageDisplay->geometry().width()
-        && event->pos().y()>=0 && event->pos().y()<= ui->labelImageDisplay->geometry().height())
+        QPoint const p = ui->labelImageDisplay->mapFromParent(event->pos());
+        if(p.x()>=0 && p.x()<= ui->labelImageDisplay->width()
+        && p.y()>=0 && p.y()<= ui->labelImageDisplay->height())
         {
-            cout << "In widget: " << event->pos().x() << ", " << event->pos().y() << endl;
+            cout << "In label: " << p.x() << ", " << p.y() << endl;
         }
         else
         {
@@ -43,11 +39,12 @@ void Widget::mouseMoveEvent(QMouseEvent *event)
 void Widget::on_imageOpenButton_clicked()
 {
     String imageFilePathName( "/home/jacdob/Pictures/7B0A4522.JPG" );
-    imageOriginal = imread( imageFilePathName, IMREAD_UNCHANGED );
+    imageOriginal = imread( imageFilePathName, IMREAD_GRAYSCALE );
     if(imageOriginal.empty())
     {
-        cout << "Could not open or find the image." << std::endl ;
-        // !!!handle invalid input
+        QMessageBox msgBox;
+        msgBox.setText("Could not open or find the image.");
+        msgBox.exec();
     }
     else
     {
@@ -96,7 +93,7 @@ void Widget::on_verticalSliderZoomInOut_valueChanged(int value)
 
         cout << "Width: " << imageManipulated.cols << " Hight: " << imageManipulated.rows << endl;
 
-        cvtColor(tempImage, tempImage, CV_BGR2GRAY);
+        //cvtColor(tempImage, tempImage, CV_BGR2GRAY);
         QImage imgOut= QImage(static_cast<uchar*>(tempImage.data), tempImage.cols, tempImage.rows, tempImage.step, QImage::Format_Grayscale8);
         QPixmap pixmap = QPixmap::fromImage(imgOut);
         ui->labelImageDisplay->setFixedHeight(imgOut.height());
@@ -105,14 +102,4 @@ void Widget::on_verticalSliderZoomInOut_valueChanged(int value)
     }
 }
 
-void Widget::on_verticalSliderZoomInOut_sliderMoved(int position)
-{
-    cout << "Slider position: " << position <<endl;
 
-void Widget::on_verticalSliderZoomInOut_valueChanged(int value)
-{
-    QString s = QString::number(value);
-    ui->labelZoomSliderValue->setText(s);
-}
-
-}

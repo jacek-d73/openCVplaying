@@ -12,6 +12,7 @@
 
 #include <QWidget>
 #include <QMouseEvent>
+#include <QMessageBox>
 
 
 using namespace cv;
@@ -30,14 +31,12 @@ public:
     ~Widget();
 
 protected:
-    void mouseMoveEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
 
 private slots:
     void on_imageOpenButton_clicked();
-
     void on_verticalSliderZoomInOut_valueChanged(int value);
 
-    void on_verticalSliderZoomInOut_sliderMoved(int position);
 
 private:
     Ui::Widget *ui;
@@ -45,7 +44,7 @@ private:
 
     double imageScaling;//scaling to fit the label after open
     double zoomFactor;//1.0 - as scaled after open
-    int actualOriginX, actualOriginY;//actual left, upper corner of ROI
+    QPoint centerOfROI;//ROI center coords
 };
 
 #endif // WIDGET_H
