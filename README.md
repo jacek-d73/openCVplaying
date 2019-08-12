@@ -1,1 +1,2 @@
-Qt_new
+Qt
+openCV
