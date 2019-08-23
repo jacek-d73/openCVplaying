@@ -23,9 +23,9 @@ void Widget::mousePressEvent(QMouseEvent *event)
 {
     if(event->buttons() & Qt::LeftButton)
     {
-        QPoint const p = ui->labelImageDisplay->mapFromParent(event->pos());
+        QPoint const p = ui->labelImageDisplay->mapFromParent(event->pos());//get cursor coords and maps them to image display coords
         if(p.x()>=0 && p.x()<= ui->labelImageDisplay->width()
-        && p.y()>=0 && p.y()<= ui->labelImageDisplay->height())
+        && p.y()>=0 && p.y()<= ui->labelImageDisplay->height())//check if within image display
         {
             cout << "In label: " << p.x() << ", " << p.y() << endl;
 
@@ -34,16 +34,17 @@ void Widget::mousePressEvent(QMouseEvent *event)
             //cout << "In original image: " << static_cast<int>(p.x()/scale) << ", " << static_cast<int>(p.y()/scale) << endl;
 
             //define center of ROI
-            centerOfROI.setX(static_cast<int>(p.x()/scale));
-            centerOfROI.setY(static_cast<int>(p.y()/scale));
+            centerOfROI.setX(p.x()/scale);
+            centerOfROI.setY(p.y()/scale);
         }
     }
 }
 
 void Widget::on_imageOpenButton_clicked()
 {
-    String imageFilePathName( "/home/jacdob/Pictures/7B0A4522.JPG" );
-    imageOriginal = imread( imageFilePathName, IMREAD_GRAYSCALE );
+    cv::String imageFilePathName( "/home/jacdob/Pictures/7B0A4522.JPG" );
+    imageOriginal = cv::imread( imageFilePathName, IMREAD_GRAYSCALE );
+
     if(imageOriginal.empty())
     {
         QMessageBox msgBox;
@@ -57,7 +58,7 @@ void Widget::on_imageOpenButton_clicked()
         centerOfROI.setY(imageOriginal.rows / 2);
 
         //initial fitting image into label size
-        imageScaling = static_cast<double>(ui->labelImageDisplay->maximumWidth())/static_cast<double>(imageOriginal.cols);
+        imageScaling = ui->labelImageDisplay->maximumWidth()/imageOriginal.cols;
 
         //update slider and label -> this will fire Widget::on_verticalSliderZoomInOut_valueChanged
         ui->verticalSliderZoomInOut->setValue(zoomFactor);
@@ -76,6 +77,8 @@ void Widget::on_verticalSliderZoomInOut_valueChanged(int value)
     {
 
         //create rectangle based on original image size and zoom factor
+        //int rectXsize(imageOriginal.cols/static_cast<int>(zoomFactor));
+        //int rectYsize(imageOriginal.rows/static_cast<int>(zoomFactor));
         int rectXsize(imageOriginal.cols/zoomFactor);
         int rectYsize(imageOriginal.rows/zoomFactor);
 
@@ -88,7 +91,8 @@ void Widget::on_verticalSliderZoomInOut_valueChanged(int value)
         cout << "Original image scaling: " << imageScaling << ", ROI scaling: " << scale << endl;
 
         Mat tempImage;
-        cv::resize(imageManipulated, tempImage, Size(), scale, scale, CV_INTER_CUBIC  );
+
+        cv::resize(imageManipulated, tempImage, Size(), scale, scale, INTER_CUBIC);
 
 //        namedWindow("imageManipulated", WINDOW_AUTOSIZE);
 //        imshow("imageManipulated", imageManipulated);
