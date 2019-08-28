@@ -15,11 +15,6 @@
 
 
 
-using namespace cv;
-//using namespace std;
-
-
-
 namespace Ui {
 class Widget;
 }
